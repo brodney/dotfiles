@@ -5,6 +5,9 @@ endif
 
 execute pathogen#infect()
 
+syntax on
+filetype plugin indent on
+
 " Use space as leader!
 let g:mapleader="\<Space>"
 
@@ -20,11 +23,11 @@ set history=1000               " The number of history items to remember
 set backspace=indent,eol,start " Backspace settings
 set nostartofline              " Keep cursor in the same place after saves
 set showcmd                    " Show command information on the right side of the command line
+set number                     " Shows line numbers
 
-set number                  " Shows line numbers
+set laststatus=2
+set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 
-syntax on
-filetype plugin indent on
 
 
 " Create a directory if it doesn't exist yet
