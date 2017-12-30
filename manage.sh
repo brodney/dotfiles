@@ -4,6 +4,7 @@ files=(\
   alias \
   bash_profile \
   bashrc \
+  vim \
   vimrc \
 )
 

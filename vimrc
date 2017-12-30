@@ -3,6 +3,8 @@ if &compatible
   set nocompatible
 endif
 
+execute pathogen#infect()
+
 set autoindent                 " Indent the next line matching the previous line
 set smartindent                " Smart auto-indent when creating a new line
 set tabstop=2                  " Number of spaces each tab counts for
@@ -18,3 +20,5 @@ set showcmd                    " Show command information on the right side of t
 
 set number                  " Shows line numbers
 
+syntax on
+filetype plugin indent on
