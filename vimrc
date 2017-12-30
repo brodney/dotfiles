@@ -5,6 +5,9 @@ endif
 
 execute pathogen#infect()
 
+" Use space as leader!
+let g:mapleader="\<Space>"
+
 set autoindent                 " Indent the next line matching the previous line
 set smartindent                " Smart auto-indent when creating a new line
 set tabstop=2                  " Number of spaces each tab counts for
@@ -22,3 +25,24 @@ set number                  " Shows line numbers
 
 syntax on
 filetype plugin indent on
+
+
+" Create a directory if it doesn't exist yet
+function! s:EnsureDirectory(directory)
+  if !isdirectory(expand(a:directory))
+    call mkdir(expand(a:directory), 'p')
+  endif
+endfunction
+
+" Save backup files, storage is cheap, losing changes is sad
+set backup
+set backupdir=$HOME/.tmp/vim/backup
+call s:EnsureDirectory(&backupdir)
+
+" Write undo tree to a file to resume from next time the file is opened
+if has('persistent_undo')
+  set undolevels=2000            " The number of undo items to remember
+  set undofile                   " Save undo history to files locally
+  set undodir=$HOME/.vimundo     " Set the directory of the undofile
+  call s:EnsureDirectory(&undodir)
+endif
