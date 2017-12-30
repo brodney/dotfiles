@@ -11,6 +11,7 @@ filetype plugin indent on
 " Use space as leader!
 let g:mapleader="\<Space>"
 
+set incsearch
 set autoindent                 " Indent the next line matching the previous line
 set smartindent                " Smart auto-indent when creating a new line
 set tabstop=2                  " Number of spaces each tab counts for
@@ -48,4 +49,12 @@ if has('persistent_undo')
   set undofile                   " Save undo history to files locally
   set undodir=$HOME/.vimundo     " Set the directory of the undofile
   call s:EnsureDirectory(&undodir)
+endif
+
+if has('clipboard')     " If the feature is available
+  set clipboard=unnamed " copy to the system clipboard
+
+  if has('unnamedplus')
+    set clipboard+=unnamedplus
+  endif
 endif
