@@ -1,3 +1,4 @@
 brew 'npm'
 brew 'tmux'
+brew 'unrar'
 brew 'zsh'
