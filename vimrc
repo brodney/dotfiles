@@ -30,6 +30,9 @@ set number                     " Shows line numbers
 set laststatus=2
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 
+set colorcolumn=110
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
 " Create a directory if it doesn't exist yet
 function! s:EnsureDirectory(directory)
   if !isdirectory(expand(a:directory))
@@ -49,6 +52,8 @@ if has('persistent_undo')
   set undodir=$HOME/.vimundo     " Set the directory of the undofile
   call s:EnsureDirectory(&undodir)
 endif
+
+nnoremap `` ``zz
 
 if has('clipboard')     " If the feature is available
   set clipboard=unnamed " copy to the system clipboard
