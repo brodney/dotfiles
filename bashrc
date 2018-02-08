@@ -8,7 +8,7 @@ export DOTFILES="$(dirname "$(readlink "$HOME/.bashrc")")"
 source $DOTFILES/git-completion.bash
 
 export PS1="(\w \j) \$ "
-source '/Users/bjones/src/blessclient/lyftprofile' # bless ssh alias
+source '/Users/bjones/dev/blessclient/lyftprofile' # bless ssh alias
 
 # Enable aliases to be sudo'ed
 alias sudo="sudo "

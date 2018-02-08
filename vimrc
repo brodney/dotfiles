@@ -11,7 +11,8 @@ filetype plugin indent on
 " Use space as leader!
 let g:mapleader="\<Space>"
 
-set incsearch
+set incsearch                  " Match while typing search string
+set hlsearch                   " Highlight search matches
 set autoindent                 " Indent the next line matching the previous line
 set smartindent                " Smart auto-indent when creating a new line
 set tabstop=2                  " Number of spaces each tab counts for
@@ -28,8 +29,6 @@ set number                     " Shows line numbers
 
 set laststatus=2
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
-
-
 
 " Create a directory if it doesn't exist yet
 function! s:EnsureDirectory(directory)
