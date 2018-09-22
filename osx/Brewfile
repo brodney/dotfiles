@@ -1,4 +1,7 @@
+brew 'ag'
 brew 'npm'
 brew 'tmux'
 brew 'unrar'
 brew 'zsh'
+
+brew 'jhawthorn/fzy'
