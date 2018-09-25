@@ -11,6 +11,8 @@ call plug#end()
 syntax on
 filetype plugin indent on
 
+set shell=$SHELL
+
 " Use space as leader!
 let g:mapleader="\<Space>"
 

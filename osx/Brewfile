@@ -1,5 +1,6 @@
 brew 'ag'
 brew 'npm'
+brew 'reattach-to-user-namespace'
 brew 'tmux'
 brew 'unrar'
 brew 'zsh'
