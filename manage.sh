@@ -7,6 +7,7 @@ files=(\
   tmux.conf \
   vim \
   vimrc \
+  zshrc \
 )
 
 custom_path() {

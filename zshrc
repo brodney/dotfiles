@@ -59,7 +59,16 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  brew
+  docker
   git
+  osx
+  pip
+  python
+  sudo
+  tmux
+  vi-mode
+  virtualenvwrapper
 )
 
 source $ZSH/oh-my-zsh.sh
