@@ -1,8 +1,9 @@
 brew 'ag'
 brew 'npm'
+brew 'oh-my-zsh'
 brew 'reattach-to-user-namespace'
 brew 'tmux'
 brew 'unrar'
 brew 'zsh'
 
-brew 'jhawthorn/fzy'
+brew 'fzy'
