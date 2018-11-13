@@ -1,4 +1,6 @@
 brew 'ag'
+brew 'ctags'
+cask 'licecap'
 brew 'npm'
 brew 'oh-my-zsh'
 brew 'reattach-to-user-namespace'

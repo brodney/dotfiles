@@ -4,8 +4,15 @@ if &compatible
 endif
 
 call plug#begin()
+Plug 'gfontenot/vim-xcode'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-sort-motion'
+Plug 'gfontenot/vim-xcode'
 Plug 'keith/swift.vim'
-" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 call plug#end()
 
 syntax on
