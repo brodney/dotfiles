@@ -4,6 +4,9 @@ files=(\
   alias \
   bash_profile \
   bashrc \
+  config \
+  ctags \
+  git_template \
   tmux.conf \
   vim \
   vimrc \
