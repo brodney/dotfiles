@@ -1,0 +1,23 @@
+[user]
+  email = bjones@lyft.com
+  name = Brett Jones
+[core]
+  excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
+  editor = vim
+  whitespace = trailing-space,space-before-tab
+  pager = pager
+[init]
+  templatedir = ~/.git_template
+[push]
+  default = upstream
+[diff]
+  tool = vimdiff
+[merge]
+  tool = vim
+  log = true
+  stat = true
+[github]
+  user = brodney
+[fetch]
+  prune = true

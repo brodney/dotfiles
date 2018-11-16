@@ -7,6 +7,7 @@ files=(\
   config \
   ctags \
   git_template \
+  gitconfig \
   tmux.conf \
   vim \
   vimrc \

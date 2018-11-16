@@ -8,6 +8,7 @@ Plug 'gfontenot/vim-xcode'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-sort-motion'
 Plug 'gfontenot/vim-xcode'
+Plug 'janko-m/vim-test'
 Plug 'keith/swift.vim'
 Plug 'neomake/neomake'
 Plug 'tpope/vim-commentary'
@@ -76,6 +77,14 @@ if has('clipboard')     " If the feature is available
   endif
 endif
 
+" Close all the lists
+nnoremap <silent> <leader>q :call <SID>CloseLists()<CR>
+function! s:CloseLists()
+  lclose
+  cclose
+  pclose
+  silent! TagbarClose
+endfunction
 
 " Concatenate the directory into the ls-files command
 function! s:GitListCommand(directory)
