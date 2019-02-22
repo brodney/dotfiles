@@ -35,3 +35,4 @@ alias untar="tar -zxvf"
 
 # Remove all items from the dock
 alias cleardock="defaults write com.apple.dock persistent-apps -array \"\" && killall Dock"
+source '/Users/bjones/src/blessclient/lyftprofile' # bless ssh alias

@@ -11,6 +11,8 @@ Plug 'gfontenot/vim-xcode'
 Plug 'janko-m/vim-test'
 Plug 'keith/swift.vim'
 Plug 'neomake/neomake'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
@@ -40,13 +42,23 @@ set backspace=indent,eol,start " Backspace settings
 set nostartofline              " Keep cursor in the same place after saves
 set showcmd                    " Show command information on the right side of the command line
 set number                     " Shows line numbers
+set autoread                   " Auto reload file when changed outside vim
 
 set laststatus=2
 set statusline=%F%m%r%h%w[%L][%{&ff}]%y[%p%%][%04l,%04v]
 
 set colorcolumn=110
 highlight ColorColumn ctermbg=0 guibg=lightgrey
+highlight Search cterm=NONE ctermfg=darkgrey ctermbg=white
 
+if executable('sourcekit-lsp')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'sourcekit-lsp',
+        \ 'cmd': {server_info->['sourcekit-lsp']},
+        \ 'whitelist': ['swift'],
+        \ })
+endif
+    
 " Create a directory if it doesn't exist yet
 function! s:EnsureDirectory(directory)
   if !isdirectory(expand(a:directory))
@@ -144,3 +156,6 @@ nnoremap <C-p>  :call FuzzyFindCommand("edit")<cr>
 nnoremap <C-p>e :call FuzzyFindCommand("edit")<cr>
 nnoremap <C-p>v :call FuzzyFindCommand("vsplit")<cr>
 nnoremap <C-p>s :call FuzzyFindCommand("split")<cr>
+
+" Replace the current word with the pasteboard, then put it back
+nnoremap <C-y> viwpyiw

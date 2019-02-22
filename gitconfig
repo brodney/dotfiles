@@ -6,13 +6,10 @@
   attributesfile = ~/.gitattributes
   editor = vim
   whitespace = trailing-space,space-before-tab
-  pager = pager
 [init]
   templatedir = ~/.git_template
 [push]
   default = upstream
-[diff]
-  tool = vimdiff
 [merge]
   tool = vim
   log = true
