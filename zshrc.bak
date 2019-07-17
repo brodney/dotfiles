@@ -110,3 +110,4 @@ om () {
   echo $CSS > $TEMPFILE
   python -m markdown -v -o html5 $1 >> $TEMPFILE && open -a "Google Chrome" $TEMPFILE
 }
+source '/Users/bjones/src/blessclient/lyftprofile' # bless ssh alias
