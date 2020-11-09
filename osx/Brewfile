@@ -1,7 +1,7 @@
 brew 'ag'
 brew 'ctags'
+brew 'fnm'
 cask 'licecap'
-brew 'npm'
 brew 'neovim'
 #brew 'oh-my-zsh'
 brew 'pyenv'

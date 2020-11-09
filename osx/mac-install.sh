@@ -12,10 +12,10 @@ cd "$(dirname "$0")"
 cd ..
 ./manage.sh install
 
-if [[ ! -e "$HOME/.bashrc" ]]; then
-  echo "Looks like the manage script failed, try and run it manually"
-  exit 1
-fi
+# if [[ ! -e "$HOME/.bashrc" ]]; then
+#   echo "Looks like the manage script failed, try and run it manually"
+#   exit 1
+# fi
 
 if ! which brew &> /dev/null; then
   echo "You need to install homebrew"

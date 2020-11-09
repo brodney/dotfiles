@@ -4,6 +4,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/bjones/.oh-my-zsh
 
+export GOPATH=/Users/bjones/src/go
 export ANDROID_HOME=/Users/bjones/Library/Android/sdk
 export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 # Set name of the theme to load. Optionally, if you set this to "random"
@@ -11,6 +12,7 @@ export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
+eval "$(fnm env)"
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
 # cause zsh load theme from this variable instead of
@@ -110,3 +112,13 @@ om () {
   echo $CSS > $TEMPFILE
   python -m markdown -v -o html5 $1 >> $TEMPFILE && open -a "Google Chrome" $TEMPFILE
 }
+
+# Add support for Go modules and Lyft's Athens module proxy/store
+# These variables were added by 'hacktools/set_go_env_vars.sh'
+export GOPROXY='https://athens.ingress.infra.us-east-1.k8s.lyft.net'
+export GONOSUMDB='github.com/lyft/*,github.lyft.net/*'
+export GO111MODULE='auto'
+
+# fnm
+export PATH=/Users/bjones/.fnm:$PATH
+eval "`fnm env`"
