@@ -1,5 +1,5 @@
 [user]
-  email = bjones@lyft.com
+	email = r.brett.jones@gmail.com
   name = Brett Jones
 [core]
   excludesfile = ~/.gitignore
@@ -20,3 +20,8 @@
   prune = true
 [url "git@github.com:"]
  insteadOf = https://github.com/
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

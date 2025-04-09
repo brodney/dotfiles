@@ -4,7 +4,7 @@ if &compatible
 endif
 
 call plug#begin()
-Plug 'gfontenot/vim-xcode'
+Plug 'gfontenot/vim-xcode', {'branch': 'main'}
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-sort-motion'
 Plug 'gfontenot/vim-xcode'

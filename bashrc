@@ -34,3 +34,13 @@ alias untar="tar -zxvf"
 
 # Remove all items from the dock
 alias cleardock="defaults write com.apple.dock persistent-apps -array \"\" && killall Dock"
+
+### lyft_localdevtools_shell_rc start
+### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
+if [[ -f "/opt/homebrew/Library/Taps/lyft/homebrew-localdevtools/scripts/shell_rc.sh" ]]; then
+    source "/opt/homebrew/Library/Taps/lyft/homebrew-localdevtools/scripts/shell_rc.sh"
+fi
+### lyft_localdevtools_shell_rc end
+
+### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
+eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"

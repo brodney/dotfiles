@@ -1,3 +1,48 @@
-Building my own set of dotfiles from scratch.
+# My Dotfiles
 
-Modeled from https://github.com/keith/dotfiles. For now.
+This repository contains my personal dotfiles and configuration files for various tools and applications. These configurations are designed to work across different machines and provide a consistent development environment.
+
+## Features
+
+- Shell configurations (zsh, bash)
+- Git configuration and templates
+- Vim configuration
+- Tmux configuration
+- OSX-specific settings
+- Various utility scripts
+
+## Installation
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/dotfiles.git ~/.dotfiles
+   cd ~/.dotfiles
+   ```
+
+2. Run the installation script:
+   ```bash
+   ./manage.sh install
+   ```
+
+This will create symlinks for all configuration files in your home directory.
+
+## Management
+
+- `./manage.sh install` - Create symlinks for all configuration files
+- `./manage.sh remove` - Remove all symlinks
+- `./manage.sh check` - Check for broken symlinks
+- `./manage.sh clean` - Remove broken symlinks
+
+## Structure
+
+- `zshrc` - Zsh configuration
+- `vimrc` - Vim configuration
+- `gitconfig` - Git configuration
+- `tmux.conf` - Tmux configuration
+- `osx/` - OSX-specific settings
+- `config/` - Application-specific configurations
+- `vim/` - Vim plugins and additional configuration
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
