@@ -23,7 +23,6 @@ files=(\
   alias \
   bash_profile \
   bashrc \
-  config \
   ctags \
   git_template \
   gitconfig \
@@ -31,6 +30,11 @@ files=(\
   vim \
   vimrc \
   zshrc \
+)
+
+# Directories to manage
+directories=(\
+  config \
 )
 
 # Script settings
@@ -103,6 +107,42 @@ link() {
   fi
 }
 
+# Links the contents of a directory to its new location
+link_directory() {
+  local dirname="$1"
+  local target_dir="$HOME/.$dirname"
+
+  if [[ ! -d "$dirname" ]]; then
+    error "Directory $dirname doesn't exist"
+  fi
+
+  if [[ ! -d "$target_dir" ]]; then
+    log "Creating directory $target_dir"
+    if [ "$DRY_RUN" = false ]; then
+      mkdir -p "$target_dir"
+    fi
+  fi
+
+  # Link each file in the directory
+  for file in "$dirname"/*; do
+    if [[ -e "$file" ]]; then
+      local target="$target_dir/$(basename "$file")"
+      if [[ -e "$target" ]]; then
+        if [[ -L "$target" ]]; then
+          log "Symlink already exists: $target"
+        else
+          log "File exists at $target, skipping"
+        fi
+      else
+        log "Linking $file to $target"
+        if [ "$DRY_RUN" = false ]; then
+          ln -sf "$PWD/$file" "$target"
+        fi
+      fi
+    fi
+  done
+}
+
 # Delete the linked file
 unlink() {
   local target="$(new_path "$1")"
@@ -114,6 +154,23 @@ unlink() {
     fi
   elif [[ -e "$target" ]]; then
     log "Not a symlink, skipping: $target"
+  fi
+}
+
+# Delete the contents of a linked directory
+unlink_directory() {
+  local dirname="$1"
+  local target_dir="$HOME/.$dirname"
+
+  if [[ -d "$target_dir" ]]; then
+    for file in "$target_dir"/*; do
+      if [[ -L "$file" ]]; then
+        log "Removing symlink: $file"
+        if [ "$DRY_RUN" = false ]; then
+          rm "$file"
+        fi
+      fi
+    done
   fi
 }
 
@@ -134,6 +191,26 @@ status() {
       echo -e "  $file (not installed)"
     fi
   done
+
+  for dir in "${directories[@]}"; do
+    local target_dir="$HOME/.$dir"
+    echo -e "\n${BLUE}Directory $dir status:${NC}"
+    if [[ -d "$target_dir" ]]; then
+      for file in "$target_dir"/*; do
+        if [[ -L "$file" ]]; then
+          if [[ -e "$file" ]]; then
+            echo -e "${GREEN}✓ $(basename "$file")${NC} (symlinked)"
+          else
+            echo -e "${RED}✗ $(basename "$file")${NC} (broken symlink)"
+          fi
+        elif [[ -e "$file" ]]; then
+          echo -e "${YELLOW}? $(basename "$file")${NC} (exists but not symlinked)"
+        fi
+      done
+    else
+      echo -e "  (directory not created)"
+    fi
+  done
 }
 
 # Main functions
@@ -142,6 +219,9 @@ install_links() {
   for file in "${files[@]}"; do
     link "$file"
   done
+  for dir in "${directories[@]}"; do
+    link_directory "$dir"
+  done
   log "Installation complete!"
 }
 
@@ -149,6 +229,9 @@ remove_links() {
   log "Removing dotfiles..."
   for file in "${files[@]}"; do
     unlink "$file"
+  done
+  for dir in "${directories[@]}"; do
+    unlink_directory "$dir"
   done
   log "Removal complete!"
 }

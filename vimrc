@@ -9,6 +9,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-sort-motion'
 Plug 'gfontenot/vim-xcode'
 Plug 'janko-m/vim-test'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'keith/swift.vim'
 Plug 'neomake/neomake'
 Plug 'prabirshrestha/async.vim'
@@ -25,7 +27,7 @@ filetype plugin indent on
 set shell=$SHELL
 
 " Use space as leader!
-let g:mapleader="\<Space>"
+let mapleader="\<Space>"
 
 set incsearch                  " Match while typing search string
 set hlsearch                   " Highlight search matches
@@ -78,8 +80,6 @@ if has('persistent_undo')
   set undodir=$HOME/.vimundo     " Set the directory of the undofile
   call s:EnsureDirectory(&undodir)
 endif
-
-nnoremap `` ``zz
 
 if has('clipboard')     " If the feature is available
   set clipboard=unnamed " copy to the system clipboard
