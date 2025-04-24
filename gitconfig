@@ -15,6 +15,9 @@
   tool = vim
   log = true
   stat = true
+[pull]
+  rebase = false
+  ff = only
 [github]
   user = brodney
 [fetch]
