@@ -38,7 +38,7 @@ directories=(\
 )
 
 # Script settings
-VERBOSE=false
+VERBOSE=true
 DRY_RUN=false
 
 # Print usage information
@@ -214,6 +214,31 @@ status() {
 }
 
 # Main functions
+install_tmux_plugins() {
+  log "Installing tmux plugins..."
+  
+  # Create tmux plugins directory if it doesn't exist
+  local tpm_dir="$HOME/.tmux/plugins/tpm"
+  if [ ! -d "$tpm_dir" ]; then
+    log "Installing TPM..."
+    if [ "$DRY_RUN" = false ]; then
+      git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
+    fi
+  fi
+
+  # Install plugins
+  if [ "$DRY_RUN" = false ]; then
+    # Start a temporary tmux session to install plugins
+    tmux new-session -d -s temp_session
+    tmux send-keys -t temp_session "tmux source ~/.tmux.conf" C-m
+    tmux send-keys -t temp_session "tmux run-shell ~/.tmux/plugins/tpm/scripts/install_plugins.sh" C-m
+    tmux send-keys -t temp_session "exit" C-m
+    tmux kill-session -t temp_session
+  fi
+  
+  log "Tmux plugins installation complete!"
+}
+
 install_links() {
   log "Installing dotfiles..."
   for file in "${files[@]}"; do
@@ -222,6 +247,10 @@ install_links() {
   for dir in "${directories[@]}"; do
     link_directory "$dir"
   done
+  
+  # Install tmux plugins after linking tmux.conf
+  install_tmux_plugins
+  
   log "Installation complete!"
 }
 

@@ -8,6 +8,7 @@
   whitespace = trailing-space,space-before-tab
 [init]
   templatedir = ~/.git_template
+  defaultBranch = main
 [push]
   default = upstream
 [merge]
@@ -25,3 +26,7 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[color]
+	ui = true
+[branch]
+	autoSetupMerge = always

@@ -53,14 +53,6 @@ set colorcolumn=110
 highlight ColorColumn ctermbg=0 guibg=lightgrey
 highlight Search cterm=NONE ctermfg=darkgrey ctermbg=white
 
-if executable('sourcekit-lsp')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'sourcekit-lsp',
-        \ 'cmd': {server_info->['sourcekit-lsp']},
-        \ 'whitelist': ['swift'],
-        \ })
-endif
-    
 " Create a directory if it doesn't exist yet
 function! s:EnsureDirectory(directory)
   if !isdirectory(expand(a:directory))
@@ -102,8 +94,20 @@ nnoremap <leader>p :Files<CR>
 nnoremap <leader>a :Ag<CR>
 nnoremap <leader>A :AgQuickfix<CR>
 
+" File explorer
+nnoremap <leader>e :Explore<CR>
+nnoremap <leader>E :Explore %:h<CR>
+
 " git
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
+
+" Source the current vimrc file
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" Buffers
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader><tab> :bn<CR>
+nnoremap <leader><S-tab> :bp<CR>
