@@ -88,21 +88,36 @@ new_path() {
 link() {
   local filename="$1"
   local target="$(new_path "$filename")"
+  local source_path="$PWD/$filename"
 
   if [[ ! -e "$filename" ]]; then
-    error "$filename doesn't exist"
+    error "$filename doesn't exist in the current directory"
   fi
 
   if [[ -e "$target" ]]; then
     if [[ -L "$target" ]]; then
-      log "Symlink already exists: $target"
+      # Check if the symlink points to the correct location
+      local current_link="$(readlink "$target")"
+      if [[ "$current_link" != "$source_path" ]]; then
+        log "Fixing incorrect symlink: $target (was pointing to $current_link)"
+        if [ "$DRY_RUN" = false ]; then
+          rm "$target"
+          ln -sf "$source_path" "$target"
+        fi
+      else
+        log "Symlink already exists and is correct: $target"
+      fi
     else
-      log "File exists at $target, skipping"
+      log "File exists at $target but is not a symlink. Backing up and creating symlink..."
+      if [ "$DRY_RUN" = false ]; then
+        mv "$target" "$target.bak"
+        ln -sf "$source_path" "$target"
+      fi
     fi
   else
     log "Linking $filename to $target"
     if [ "$DRY_RUN" = false ]; then
-      ln -sf "$PWD/$filename" "$target"
+      ln -sf "$source_path" "$target"
     fi
   fi
 }
@@ -239,6 +254,79 @@ install_tmux_plugins() {
   log "Tmux plugins installation complete!"
 }
 
+# Verify that all symlinks are pointing to the correct locations
+verify_links() {
+  local has_errors=false
+  echo -e "${BLUE}Verifying symlinks...${NC}"
+  
+  # Check individual files
+  for file in "${files[@]}"; do
+    local target="$(new_path "$file")"
+    local source_path="$PWD/$file"
+    
+    if [[ -L "$target" ]]; then
+      local current_link="$(readlink "$target")"
+      if [[ "$current_link" != "$source_path" ]]; then
+        echo -e "${RED}✗ $file${NC} (incorrect symlink: points to $current_link)"
+        has_errors=true
+      else
+        echo -e "${GREEN}✓ $file${NC} (correctly symlinked)"
+      fi
+    elif [[ -e "$target" ]]; then
+      echo -e "${RED}✗ $file${NC} (exists but not symlinked)"
+      has_errors=true
+    else
+      echo -e "${RED}✗ $file${NC} (not installed)"
+      has_errors=true
+    fi
+  done
+
+  # Check directories
+  for dir in "${directories[@]}"; do
+    local target_dir="$HOME/.$dir"
+    local source_dir="$PWD/$dir"
+    
+    if [[ ! -d "$target_dir" ]]; then
+      echo -e "${RED}✗ $dir${NC} (target directory not created)"
+      has_errors=true
+      continue
+    fi
+
+    # Check each file in the directory
+    for file in "$source_dir"/*; do
+      if [[ -e "$file" ]]; then
+        local filename="$(basename "$file")"
+        local target="$target_dir/$filename"
+        
+        if [[ -L "$target" ]]; then
+          local current_link="$(readlink "$target")"
+          if [[ "$current_link" != "$file" ]]; then
+            echo -e "${RED}✗ $dir/$filename${NC} (incorrect symlink: points to $current_link)"
+            has_errors=true
+          else
+            echo -e "${GREEN}✓ $dir/$filename${NC} (correctly symlinked)"
+          fi
+        elif [[ -e "$target" ]]; then
+          echo -e "${RED}✗ $dir/$filename${NC} (exists but not symlinked)"
+          has_errors=true
+        else
+          echo -e "${RED}✗ $dir/$filename${NC} (not installed)"
+          has_errors=true
+        fi
+      fi
+    done
+  done
+
+  if [ "$has_errors" = true ]; then
+    echo -e "\n${RED}Verification failed! Some symlinks are incorrect or missing.${NC}"
+    echo -e "${YELLOW}Run './manage.sh install' to fix these issues.${NC}"
+    return 1
+  else
+    echo -e "\n${GREEN}Verification successful! All symlinks are correctly installed.${NC}"
+    return 0
+  fi
+}
+
 install_links() {
   log "Installing dotfiles..."
   for file in "${files[@]}"; do
@@ -250,6 +338,11 @@ install_links() {
   
   # Install tmux plugins after linking tmux.conf
   install_tmux_plugins
+  
+  # Verify the links after installation
+  if ! verify_links; then
+    error "Installation verification failed. Please check the output above and run './manage.sh install' again if needed."
+  fi
   
   log "Installation complete!"
 }
