@@ -26,6 +26,7 @@ files=(\
   ctags \
   git_template \
   gitconfig \
+  ignore \
   tmux.conf \
   vim \
   vimrc \
