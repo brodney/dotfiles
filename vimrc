@@ -111,3 +111,6 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader><tab> :bn<CR>
 nnoremap <leader><S-tab> :bp<CR>
+
+" fzf configuration
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'

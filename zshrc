@@ -131,6 +131,7 @@ fi
 ### lyft_localdevtools_shell_rc end
 
 ### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
-
-### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
 eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+
+# Extract Modules/XXX pattern from any input
+alias iosmodule='grep -o "Modules/[^/]*" | sort -u' 
