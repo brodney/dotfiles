@@ -84,7 +84,13 @@ endif
 " Commands
 command! -nargs=* AgQuickfix call ag#quickfix(<f-args>)
 
+" Netrw
+let g:netrw_keepj = 1
+
 " Leader commands
+
+" Quit
+nnoremap <leader>q :q<CR>
 
 " Replace the current word with the pasteboard, then put it back
 nnoremap <leader>y viwpyiw

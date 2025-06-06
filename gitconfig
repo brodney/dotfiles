@@ -16,8 +16,8 @@
   log = true
   stat = true
 [pull]
-  rebase = false
-  ff = only
+  rebase = true
+  ff = false
 [github]
   user = brodney
 [fetch]
