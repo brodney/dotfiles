@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    echo "Usage: greplace <search> <replace>"
+    exit 1
+fi
+
+git grep -l "$1" | xargs sed -i '' "s/$1/$2/g" 

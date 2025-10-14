@@ -134,4 +134,8 @@ fi
 eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
 
 # Extract Modules/XXX pattern from any input
-alias iosmodule='grep -o "Modules/[^/]*" | sort -u' 
+alias iosmodule='grep -o "Modules/[^/]*" | sort -u'
+
+greplace () {
+  git grep -l "$1" | xargs sed -i '' "s/$1/$2/g"
+}
