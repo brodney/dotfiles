@@ -1,24 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/bjones/.oh-my-zsh
-
 export GOPATH=/Users/bjones/src/go
 export ANDROID_HOME=/Users/bjones/Library/Android/sdk
 export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-
-eval "$(fnm env)"
-# Set list of themes to load
-# Setting this variable when ZSH_THEME=random
-# cause zsh load theme from this variable instead of
-# looking in ~/.oh-my-zsh/themes/
-# An empty array have no effect
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -48,7 +33,7 @@ eval "$(fnm env)"
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
@@ -58,31 +43,86 @@ eval "$(fnm env)"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  brew
-  docker
-  git
-  osx
-  pip
-  python
-  sudo
-  tmux
-  vi-mode
-  virtualenvwrapper
-)
-
-source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
+HISTSIZE=5000000
+SAVEHIST=5000000
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_FIND_NO_DUPS
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
+setopt PUSHD_SILENT
+setopt EXTENDED_GLOB
+setopt GLOB_DOTS
+setopt NO_CASE_GLOB
+setopt NUMERIC_GLOB_SORT
+setopt AUTO_PARAM_SLASH
+setopt COMPLETE_ALIASES
+
+# Completion setup 
+autoload -Uz compinit
+zmodload zsh/complist
+setopt auto_menu
+setopt complete_in_word
+setopt always_to_end
+setopt autocd
+compinit -i
+
+# Colorize completion menus
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' 'r:|[._-]=* r:|=*'
+zstyle ':completion:*:descriptions' format '%F{yellow}%d%f'
+zstyle ':completion:*:messages' format '%F{purple}%d%f'
+zstyle ':completion:*:warnings' format '%F{red}No matches for:%f %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+
+if command -v dircolors >/dev/null 2>&1; then
+  eval "$(dircolors -b ~/.dircolors 2>/dev/null || dircolors -b)"
+fi
+
+if [ -z "$DOTFILES" ]; then
+  if [ -L "$HOME/.zshrc" ]; then
+    DOTFILES="$(dirname "$(readlink "$HOME/.zshrc")")"
+  else
+    DOTFILES="$HOME/dotfiles"
+  fi
+fi
+[ -f "$DOTFILES/alias" ] && source "$DOTFILES/alias"
+
+# --- Git-aware prompt (lightweight) ---
+autoload -Uz vcs_info
+setopt prompt_subst
+zstyle ':vcs_info:git:*' formats '%F{blue}(%b%f%F{red}%u%f%F{yellow}%m%f)'
+zstyle ':vcs_info:*' enable git
+precmd() { vcs_info }
+
+# Prompt: user@host dir [git]
+PROMPT='%F{green}%n@%m%f %F{cyan}%~%f ${vcs_info_msg_0_} $ '
+
+# --- Vi mode with indicator ---
+bindkey -v
+function zle-keymap-select {
+  if [[ $KEYMAP == vicmd ]]; then
+    RPROMPT='%F{magenta}[N]%f'
+  else
+    RPROMPT='%F{magenta}[I]%f'
+  fi
+  zle reset-prompt
+}
+zle -N zle-keymap-select
+
+# --- Bracketed paste ---
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -97,15 +137,7 @@ source $ZSH/oh-my-zsh.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-#
 om () {
   CSS='<link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/simonlc/Markdown-CSS/master/markdown.css">'
   TEMPFILE="/tmp/tempfile.html"
@@ -113,15 +145,21 @@ om () {
   python -m markdown -v -o html5 $1 >> $TEMPFILE && open -a "Google Chrome" $TEMPFILE
 }
 
+# --- Common aliases ---
+alias ..="cd .."
+alias ...="cd ../.."
+alias v="vim"
+alias vv="vim ."
+alias ls="ls --group-directories-first --color=auto"
+alias ll="ls -alF"
+alias la="ls -A"
+alias l="ls -CF"
+
 # Add support for Go modules and Lyft's Athens module proxy/store
 # These variables were added by 'hacktools/set_go_env_vars.sh'
 export GOPROXY='https://athens.ingress.infra.us-east-1.k8s.lyft.net'
 export GONOSUMDB='github.com/lyft/*,github.lyft.net/*'
 export GO111MODULE='auto'
-
-# fnm
-export PATH=/Users/bjones/.fnm:$PATH
-eval "`fnm env`"
 
 ### lyft_localdevtools_shell_rc start
 ### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
@@ -131,7 +169,9 @@ fi
 ### lyft_localdevtools_shell_rc end
 
 ### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
-eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+if command -v fnm >/dev/null 2>&1; then
+  eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+fi
 
 # Extract Modules/XXX pattern from any input
 alias iosmodule='grep -o "Modules/[^/]*" | sort -u'
@@ -139,3 +179,5 @@ alias iosmodule='grep -o "Modules/[^/]*" | sort -u'
 greplace () {
   git grep -l "$1" | xargs sed -i '' "s/$1/$2/g"
 }
+
+. "$HOME/.local/bin/env"

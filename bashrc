@@ -8,6 +8,7 @@ complete -W "\`grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9
 # git autocompletion
 export DOTFILES="$(dirname "$(readlink "$HOME/.bashrc")")"
 source $DOTFILES/git-completion.bash
+[ -f "$DOTFILES/alias" ] && source "$DOTFILES/alias"
 
 export PS1="(\w \j) \$ "
 
@@ -43,4 +44,8 @@ fi
 ### lyft_localdevtools_shell_rc end
 
 ### DO NOT REMOVE: automatically installed as part of Lyft local dev tool setup
-eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+if command -v fnm >/dev/null 2>&1; then
+    eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+fi
+
+. "$HOME/.local/bin/env"
