@@ -120,6 +120,10 @@ function zle-keymap-select {
 }
 zle -N zle-keymap-select
 
+# Ensure Ctrl-R searches history in both vi modes
+bindkey -M viins '^R' history-incremental-search-backward
+bindkey -M vicmd '^R' history-incremental-search-backward
+
 # --- Bracketed paste ---
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic
