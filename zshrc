@@ -1,9 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-export GOPATH=/Users/bjones/src/go
-export ANDROID_HOME=/Users/bjones/Library/Android/sdk
-export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+export GOPATH="$HOME/src/go"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -154,10 +152,7 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias v="vim"
 alias vv="vim ."
-alias ls="ls --group-directories-first --color=auto"
-alias ll="ls -alF"
-alias la="ls -A"
-alias l="ls -CF"
+ 
 
 # Add support for Go modules and Lyft's Athens module proxy/store
 # These variables were added by 'hacktools/set_go_env_vars.sh'

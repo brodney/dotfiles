@@ -1,4 +1,18 @@
 alias l="ls -la"
+
+# Cross-platform ls: prefer GNU coreutils (gls) if available; fallback to GNU or macOS flags
+if command -v gls >/dev/null 2>&1; then
+  alias ls="gls --group-directories-first --color=auto"
+else
+  if ls --version >/dev/null 2>&1; then
+    alias ls="ls --group-directories-first --color=auto"
+  else
+    alias ls="ls -G"
+  fi
+fi
+
+alias ll="ls -alF"
+alias la="ls -A"
 alias gst="git status"
 git_current_branch() { git symbolic-ref --quiet --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null; }
 git_main_branch() { git rev-parse --verify main >/dev/null 2>&1 && echo main || echo master; }
