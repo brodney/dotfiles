@@ -101,16 +101,15 @@ autoload -Uz vcs_info add-zsh-hook
 setopt prompt_subst
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:*' stagedstr ' ✗'
 zstyle ':vcs_info:git:*' unstagedstr ' ✗'
-zstyle ':vcs_info:git:*' formats '%F{blue}(%b%f%F{red}%c%u%f%F{blue})%f'
+zstyle ':vcs_info:git:*' formats '%F{blue}(%b%f%F{red}%u%f%F{blue})%f'
 add-zsh-hook precmd vcs_info
 
 # Prompt: Show user@host only when SSH'd in
 if [[ -n $SSH_CONNECTION ]]; then
-  PROMPT='%F{green}%n@%m%f %F{cyan}%c%f ${vcs_info_msg_0_} $ '
+  PROMPT='%B%F{green}%n@%m%f %F{cyan}%c%f ${vcs_info_msg_0_} %(?.$.%F{red}✗%f) %b'
 else
-  PROMPT='%F{cyan}%c%f ${vcs_info_msg_0_} $ '
+  PROMPT='%B%F{cyan}%c%f ${vcs_info_msg_0_} %(?.$.%F{red}✗%f) %b'
 fi
 
 # --- Vi mode with indicator ---
@@ -186,4 +185,6 @@ greplace () {
   git grep -l "$1" | xargs sed -i '' "s/$1/$2/g"
 }
 
-. "$HOME/.local/bin/env"
+if [ -f "$HOME/.local/bin/env" ]; then
+  . "$HOME/.local/bin/env"
+fi
