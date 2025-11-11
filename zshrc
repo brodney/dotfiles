@@ -114,6 +114,7 @@ fi
 
 # --- Vi mode with indicator ---
 bindkey -v
+RPROMPT='%F{magenta}[I]%f'  # Initialize with insert mode
 function zle-keymap-select {
   if [[ $KEYMAP == vicmd ]]; then
     RPROMPT='%F{magenta}[N]%f'
@@ -127,10 +128,6 @@ zle -N zle-keymap-select
 # Ensure Ctrl-R searches history in both vi modes
 bindkey -M viins '^R' history-incremental-search-backward
 bindkey -M vicmd '^R' history-incremental-search-backward
-
-# --- Bracketed paste ---
-autoload -Uz bracketed-paste-magic
-zle -N bracketed-paste bracketed-paste-magic
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
