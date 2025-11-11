@@ -97,14 +97,21 @@ fi
 [ -f "$DOTFILES/alias" ] && source "$DOTFILES/alias"
 
 # --- Git-aware prompt (lightweight) ---
-autoload -Uz vcs_info
+autoload -Uz vcs_info add-zsh-hook
 setopt prompt_subst
-zstyle ':vcs_info:git:*' formats '%F{blue}(%b%f%F{red}%u%f%F{yellow}%m%f)'
 zstyle ':vcs_info:*' enable git
-precmd() { vcs_info }
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr ' ✗'
+zstyle ':vcs_info:git:*' unstagedstr ' ✗'
+zstyle ':vcs_info:git:*' formats '%F{blue}(%b%f%F{red}%c%u%f%F{blue})%f'
+add-zsh-hook precmd vcs_info
 
-# Prompt: user@host dir [git]
-PROMPT='%F{green}%n@%m%f %F{cyan}%~%f ${vcs_info_msg_0_} $ '
+# Prompt: Show user@host only when SSH'd in
+if [[ -n $SSH_CONNECTION ]]; then
+  PROMPT='%F{green}%n@%m%f %F{cyan}%c%f ${vcs_info_msg_0_} $ '
+else
+  PROMPT='%F{cyan}%c%f ${vcs_info_msg_0_} $ '
+fi
 
 # --- Vi mode with indicator ---
 bindkey -v
