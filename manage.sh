@@ -27,6 +27,7 @@ files=(\
   git_template \
   gitconfig \
   ignore \
+  tmux-init-session.sh \
   tmux.conf \
   vim \
   vimrc \

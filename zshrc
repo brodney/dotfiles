@@ -112,18 +112,8 @@ else
   PROMPT='%B%F{cyan}%c%f ${vcs_info_msg_0_} %(?.$.%F{red}✗%f) %b'
 fi
 
-# --- Vi mode with indicator ---
+# --- Vi mode without indicator ---
 bindkey -v
-RPROMPT='%F{magenta}[I]%f'  # Initialize with insert mode
-function zle-keymap-select {
-  if [[ $KEYMAP == vicmd ]]; then
-    RPROMPT='%F{magenta}[N]%f'
-  else
-    RPROMPT='%F{magenta}[I]%f'
-  fi
-  zle reset-prompt
-}
-zle -N zle-keymap-select
 
 # Ensure Ctrl-R searches history in both vi modes
 bindkey -M viins '^R' history-incremental-search-backward

@@ -9,29 +9,17 @@ if [ "$WINDOW_COUNT" -gt 1 ]; then
     exit 0
 fi
 
-# Define your directories and window names here
-# Format: "window_name:directory_path"
-WINDOWS=(
-    "home:$HOME"
-    "dotfiles:$HOME/dotfiles"
-    "projects:$HOME/Projects"
-    "work:$HOME/work"
-)
+# Set the default directory for all windows (change this to your preferred path)
+DEFAULT_DIR="$HOME"
 
-# Create windows for each directory
-for i in "${!WINDOWS[@]}"; do
-    IFS=':' read -r window_name directory <<< "${WINDOWS[$i]}"
-    
-    if [ "$i" -eq 0 ]; then
-        # Rename the first window and change to the directory
-        tmux rename-window -t "$SESSION:1" "$window_name"
-        tmux send-keys -t "$SESSION:1" "cd '$directory'" Enter
-        tmux send-keys -t "$SESSION:1" "clear" Enter
-    else
-        # Create new window with name and directory
-        tmux new-window -t "$SESSION" -n "$window_name" -c "$directory"
-        tmux send-keys -t "$SESSION:$window_name" "clear" Enter
-    fi
+# Create 4 windows, all starting in the same directory
+tmux rename-window -t "$SESSION:1" "1"
+tmux send-keys -t "$SESSION:1" "cd '$DEFAULT_DIR'" Enter
+tmux send-keys -t "$SESSION:1" "clear" Enter
+
+for i in {2..4}; do
+    tmux new-window -t "$SESSION" -n "$i" -c "$DEFAULT_DIR"
+    tmux send-keys -t "$SESSION:$i" "clear" Enter
 done
 
 # Select the first window
