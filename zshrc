@@ -95,6 +95,7 @@ if [ -z "$DOTFILES" ]; then
   fi
 fi
 [ -f "$DOTFILES/alias" ] && source "$DOTFILES/alias"
+[ -f "$DOTFILES/zsh/git-worktree.zsh" ] && source "$DOTFILES/zsh/git-worktree.zsh"
 
 # --- Git-aware prompt (lightweight) ---
 autoload -Uz vcs_info add-zsh-hook
@@ -175,3 +176,5 @@ greplace () {
 if [ -f "$HOME/.local/bin/env" ]; then
   . "$HOME/.local/bin/env"
 fi
+
+export PATH="$HOME/.local/bin:$PATH"

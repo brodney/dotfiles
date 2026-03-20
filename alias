@@ -123,6 +123,11 @@ alias gsw="git switch"
 alias gswc="git switch -c"
 alias gts="git tag -s"
 alias gtv='git tag | sort -V'
+alias gw="git worktree"
+alias gwl="git worktree list"
+alias gwm="git worktree move"
+alias gwp="git worktree prune"
+alias gwr="git worktree remove"
 
 # Git alias completions - make git aliases work with tab completion
 compdef _git gco=git-checkout
@@ -150,3 +155,7 @@ compdef _git gp=git-push
 compdef _git grb=git-rebase
 compdef _git grbi=git-rebase
 compdef _git grbm=git-rebase
+compdef _git gw=git-worktree
+compdef _git gwl=git-worktree
+compdef _git gwm=git-worktree
+compdef _git gwr=git-worktree

@@ -1,6 +1,6 @@
 [user]
 	email = r.brett.jones@gmail.com
-  name = Brett Jones
+	name = Brett Jones
 [core]
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
