@@ -1,9 +1,43 @@
 # Git worktree helpers (zsh). Sourced from zshrc after compinit.
 
-# git worktree add: `../` + first arg, then the rest (no smarts — use plain `git worktree add` if it breaks).
+# Prefix short names with brodney/ for gwab (skip if already has brodney/ or another slash).
+__gwa_brodney_branch() {
+  local b=$1
+  [[ $b == brodney/* ]] && { print -r -- $b; return }
+  [[ $b == */* ]] && { print -r -- $b; return }
+  print -r -- "brodney/$b"
+}
+
+# Sibling worktree: ../<dir>. No brodney/ rewriting — use gwab for that.
+#   gwa dir [ref…]       →  git worktree add ../dir …
+#   gwa -b|-B br dir [start]  →  git worktree add -b|-B br ../dir [start]  (literal branch name)
+# Other leading flags → pass through to git worktree add.
 gwa() {
   (( $# )) || { command git worktree add; return; }
-  command git worktree add "../$1" "${@:2}"
+
+  if [[ $1 == -b || $1 == -B ]]; then
+    (( $# >= 3 )) || { command git worktree add "$@"; return; }
+    local flag=$1 br=$2 d=$3
+    shift 3
+    command git worktree add "$flag" "$br" "../${d#./}" "$@"
+    return
+  fi
+
+  if [[ $1 == -* ]]; then
+    command git worktree add "$@"
+    return
+  fi
+
+  command git worktree add "../${1#./}" "${@:2}"
+}
+
+# Like: gwa -b brodney/<name> <name> [start] — new branch under brodney/, sibling dir ../<name>.
+gwab() {
+  (( $# )) || { print -u2 "gwab: usage: gwab <name> [start-point]"; return 1; }
+  local n=$1 br
+  shift
+  br=$(__gwa_brodney_branch "$n")
+  command git worktree add -b "$br" "../${n#./}" "$@"
 }
 
 # Populates __gws_paths and __gws_labels (basename, or parent/basename if basenames collide; full path if labels still collide).
@@ -100,3 +134,4 @@ _gws() {
 
 compdef _gws gws
 compdef _git gwa=git-worktree
+compdef _git gwab=git-worktree
