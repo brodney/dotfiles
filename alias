@@ -86,6 +86,7 @@ alias gpd="git push --dry-run"
 alias gpoat="git push origin --all && git push origin --tags"
 alias ggpush='git push origin $(git_current_branch)'
 alias ggsup='git branch --set-upstream-to=origin/$(git_current_branch)'
+alias ghp="gh pr create --web"
 alias gpsup='git push --set-upstream origin $(git_current_branch)'
 alias gpu="git push upstream"
 alias gpv="git push -v"

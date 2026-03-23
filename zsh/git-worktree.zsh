@@ -34,10 +34,12 @@ gwa() {
 # Like: gwa -b brodney/<name> <name> [start] — new branch under brodney/, sibling dir ../<name>.
 gwab() {
   (( $# )) || { print -u2 "gwab: usage: gwab <name> [start-point]"; return 1; }
-  local n=$1 br
+  local n=$1 br wtpath
   shift
   br=$(__gwa_brodney_branch "$n")
-  command git worktree add -b "$br" "../${n#./}" "$@"
+  wtpath="../${n#./}"
+  command git worktree add -b "$br" "$wtpath" "$@" || return
+  builtin cd -- "$wtpath" || return
 }
 
 # Populates __gws_paths and __gws_labels (basename, or parent/basename if basenames collide; full path if labels still collide).
