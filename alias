@@ -1,16 +1,19 @@
 alias l="ls -la"
 alias -- -="cd -"
 
-# Cross-platform ls: prefer GNU coreutils (gls) if available; fallback to GNU or macOS flags
-if command -v gls >/dev/null 2>&1; then
-  alias ls="gls --group-directories-first --color=auto"
-else
-  if ls --version >/dev/null 2>&1; then
-    alias ls="ls --group-directories-first --color=auto"
+# Cross-platform ls: prefer GNU coreutils (gls) when it is on PATH; else GNU ls or BSD ls.
+# Implemented as a function (not a gls alias) so each run re-checks PATH. Tools like fnm
+# that replace PATH inside a repo no longer leave ls pointing at a missing gls.
+unalias ls 2>/dev/null
+ls() {
+  if command -v gls >/dev/null 2>&1; then
+    command gls --group-directories-first --color=auto "$@"
+  elif command ls --version >/dev/null 2>&1; then
+    command ls --group-directories-first --color=auto "$@"
   else
-    alias ls="ls -G"
+    command ls -G "$@"
   fi
-fi
+}
 
 alias ll="ls -alF"
 alias la="ls -A"
