@@ -106,6 +106,22 @@ zstyle ':vcs_info:git:*' unstagedstr ' ✗'
 zstyle ':vcs_info:git:*' formats '%F{blue}(%b%f%F{red}%u%f%F{blue})%f'
 add-zsh-hook precmd vcs_info
 
+# Auto-activate/deactivate Python venv on cd
+_auto_venv() {
+  local venv_dir
+  for venv_dir in .venv venv; do
+    if [[ -f "$PWD/$venv_dir/bin/activate" ]]; then
+      if [[ "$VIRTUAL_ENV" != "$PWD/$venv_dir" ]]; then
+        source "$PWD/$venv_dir/bin/activate"
+      fi
+      return
+    fi
+  done
+  [[ -n "$VIRTUAL_ENV" ]] && deactivate
+}
+add-zsh-hook chpwd _auto_venv
+_auto_venv
+
 # Prompt: Show user@host only when SSH'd in
 if [[ -n $SSH_CONNECTION ]]; then
   PROMPT='%B%F{green}%n@%m%f %F{cyan}%c%f ${vcs_info_msg_0_} %(?.$.%F{red}✗%f) %b'
