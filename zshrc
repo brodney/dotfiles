@@ -194,3 +194,13 @@ if [ -f "$HOME/.local/bin/env" ]; then
 fi
 
 export PATH="$HOME/.local/bin:$PATH"
+
+# Supabase CLI
+export PATH="/home/brett/.supabase/bin:$PATH"
+
+# fnm
+FNM_PATH="/home/brett/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "$(fnm env --shell zsh)"
+fi
