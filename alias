@@ -1,4 +1,6 @@
 alias l="ls -la"
+alias cdios="cd ~/src/lyft-ios/main"
+hash -d ios=~/src/lyft-ios/main
 alias -- -="cd -"
 
 # Cross-platform ls: prefer GNU coreutils (gls) when it is on PATH; else GNU ls or BSD ls.
