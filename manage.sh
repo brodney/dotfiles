@@ -36,6 +36,7 @@ files=(\
 
 # Directories to manage
 directories=(\
+  claude \
   config \
 )
 
